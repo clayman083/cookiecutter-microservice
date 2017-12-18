@@ -19,9 +19,9 @@ setup(
     version='{{ cookiecutter.version }}',
     url='https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}',
     license='MIT',
-    author="{{ cookiecutter.full_name.replace('\"', '\\\"') }}",
+    author="{{ cookiecutter.author_name.replace('\"', '\\\"') }}",
     author_email='{{ cookiecutter.email }}',
-    description="{{ cookiecutter.project_short_description }}",
+    description="{{ cookiecutter.description }}",
     keywords="{{ cookiecutter.project_slug }}"
 
     packages=find_packages(exclude=['tests']),
