@@ -5,6 +5,7 @@ Cookiecutter Microservice
 Cookiecutter_ template for a microservice written on Python language using aiohttp.
 Created under the influence of `12 Factor Apps`_.
 
+.. _Cookiecutter: http://cookiecutter.readthedocs.io/
 .. _`12 Factor Apps`: https://12factor.net
 
 Features
