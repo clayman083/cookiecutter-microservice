@@ -1,0 +1,11 @@
+---
+
+app_name: {{ cookiecutter.project_slug }}
+
+secret_key: top-secret
+
+db_name: {{ cookiecutter.project_slug }}
+db_user: {{ cookiecutter.project_slug }}
+db_password: {{ cookiecutter.project_slug }}
+
+# sentry_dsn: https://ba44aabfd1104a1ba238a9db259bf19c:46a5dfaab85b4b57bcbf97c75ad30d5a@sentry.io/148385

@@ -1,0 +1,25 @@
+---
+language: python
+python:
+  - "3.6"
+
+sudo: required
+
+services:
+  - docker
+
+# Install ansible
+addons:
+  apt:
+    packages:
+    - python-pip
+
+install:
+  - pip install tox
+
+script:
+  - make test-all
+
+after_success:
+  # Build image
+  - make build-image
