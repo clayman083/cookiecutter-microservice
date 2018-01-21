@@ -3,12 +3,15 @@ language: python
 python:
   - "3.6"
 
+branches:
+  only:
+  - master
+
 sudo: required
 
 services:
   - docker
 
-# Install ansible
 addons:
   apt:
     packages:
@@ -18,8 +21,11 @@ install:
   - pip install tox
 
 script:
-  - make test-all
+  - tox
 
 after_success:
-  # Build image
-  - make build-image
+  # Build image and publish image
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    make build-image;
+    make publish-image;
+    fi

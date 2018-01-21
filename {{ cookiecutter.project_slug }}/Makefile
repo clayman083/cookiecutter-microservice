@@ -1,6 +1,6 @@
 .PHONY: clean clean-test clean-pyc clean-build
 
-clean: clean-build clean-pyc clean-test
+clean: clean-build clean-image clean-pyc clean-test
 
 clean-build:
 	rm -fr build/
@@ -8,6 +8,9 @@ clean-build:
 	rm -fr .eggs/
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
+
+clean-image:
+	docker images -qf dangling=true | xargs docker rmi
 
 clean-pyc:
 	find . -name '*.pyc' -exec rm -f {} +
@@ -21,8 +24,11 @@ clean-test:
 	rm -fr tests/coverage
 	rm -f tests/coverage.xml
 
+install: clean
+	pip install -e .
+
 lint:
-	flake8 {{ cookiecutter.project_slug }} tests
+	flake8 wallet tests
 
 test:
 	py.test
@@ -41,13 +47,13 @@ coverage:
 	coverage xml
 	coverage html
 
-dist: clean-build
+build: clean-build
 	python setup.py sdist
 
-install: clean
-	pip install -e .
+build-image: build
+	docker build --build-arg app_version=`python setup.py --version` -t clayman74/wallet .
+	docker tag clayman74/wallet clayman74/wallet:`python setup.py --version`
 
-build-image: dist
-	docker build --build-arg app_version=`python setup.py --version` -t {{ cookiecutter.project_slug }} .
-	docker tag {{ cookiecutter.project_slug }} {{ cookiecutter.project_slug }}:`python setup.py --version`
-	docker images -qf dangling=true | xargs docker rmi
+publish-image:
+	docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
+	docker push clayman74/wallet

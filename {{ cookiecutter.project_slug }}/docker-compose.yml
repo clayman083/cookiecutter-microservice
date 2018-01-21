@@ -1,0 +1,33 @@
+version: '3'
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  consul:
+    image: consul:latest
+    environment:
+      CONSUL_CLIENT_INTERFACE: eth0
+    ports:
+      - "8500:8500"
+    networks:
+      - backend
+
+  loadbalancer:
+    image: clayman74/loadbalancer
+    networks:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./conf/templates:/etc/consul-templates"
+      - "./conf/services:/etc/service"
+
+  postgres:
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
