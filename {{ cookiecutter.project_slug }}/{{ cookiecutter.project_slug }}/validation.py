@@ -30,7 +30,7 @@ class Validator(cerberus.Validator):
     def _normalize_default_setter_utcnow(self, document):
         return datetime.utcnow()
 
-    def validate_payload(self, payload: Dict, update: bool=False) -> Dict:
+    def validate_payload(self, payload: Dict, update: bool = False) -> Dict:
         self.allow_unknown = update
         if not self.validate(payload, update=update):
             raise ValidationError(self.errors)

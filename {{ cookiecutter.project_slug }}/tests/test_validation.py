@@ -5,6 +5,7 @@ import pytest
 from {{ cookiecutter.project_slug }}.validation import Validator
 
 
+@pytest.mark.unit
 @pytest.mark.parametrize('payload, expected', (
     ('True', True),
     ('true', True),
@@ -26,6 +27,7 @@ def test_validator_coerce_boolean(payload, expected):
     assert document['enabled'] == expected
 
 
+@pytest.mark.unit
 def test_validator_coerce_datetime():
     schema = {'created_on': {'type': 'datetime', 'coerce': 'datetime'}}
 
@@ -35,6 +37,7 @@ def test_validator_coerce_datetime():
     assert isinstance(document['created_on'], datetime)
 
 
+@pytest.mark.unit
 @pytest.mark.parametrize('payload', ({}, {'foo': 'bar'}))
 def test_validator_utcnow_default_setter(payload):
     validator = Validator({'created_on': {
@@ -44,6 +47,5 @@ def test_validator_utcnow_default_setter(payload):
     }})
     document = validator.validate_payload(payload, update=True)
 
-    print(document)
     assert 'created_on' in document
     assert isinstance(document['created_on'], datetime)

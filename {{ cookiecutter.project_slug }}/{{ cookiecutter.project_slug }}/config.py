@@ -19,12 +19,6 @@ class Config(abc.MutableMapping):
 
             'access_log': '%a %s %Tf %b "%r" "%{Referrer}i" "%{User-Agent}i"',
 
-            'db_name': 'postgres',
-            'db_user': 'postgres',
-            'db_password': 'postgres',
-            'db_host': 'localhost',
-            'db_port': 5432,
-
             'consul_host': 'localhost',
             'consul_port': 8500,
 
@@ -97,7 +91,7 @@ class Config(abc.MutableMapping):
         if value:
             self[variable_name] = value
 
-    def update_from_yaml(self, filename: str, silent: bool=False) -> None:
+    def update_from_yaml(self, filename: str, silent: bool = False) -> None:
         if not filename.endswith('yml'):
             raise RuntimeError('Config should be in yaml format')
 

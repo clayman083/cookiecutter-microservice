@@ -5,14 +5,16 @@ import logging.config
 import click
 import uvloop
 
-from {{ cookiecutter.project_slug }} import configure, init
-from {{ cookiecutter.project_slug }}.management.server import server
+from {{ cookiecutter.project_slug }}.adapters.cli.server import server
+from {{ cookiecutter.project_slug }}.app import configure, init
 
 
 class Context(object):
 
     def __init__(self, config):
-        self.conf = configure(config)
+        self.conf = configure(config, {
+            'app_name': '{{ cookiecutter.project_slug }}',
+        })
         self.init_app = init
 
         asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())

@@ -7,6 +7,3 @@ source = {{ cookiecutter.project_slug }}
 
 [html]
 directory = tests/coverage
-
-[xml]
-output = tests/coverage.xml
