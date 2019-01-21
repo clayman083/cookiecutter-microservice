@@ -1,5 +1,8 @@
 #! /bin/sh
 
+git init
+
 python3 -m venv venv
 venv/bin/pip3 install -U pip
-venv/bin/pip3 install -e '.[develop]'
+
+flit install -s --python venv/bin/python

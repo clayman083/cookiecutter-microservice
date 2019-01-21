@@ -1,6 +1,6 @@
 import logging
 
-import pytest
+import pytest  # type: ignore
 from aiohttp import web
 
 from {{ cookiecutter.project_slug }}.app import configure, init

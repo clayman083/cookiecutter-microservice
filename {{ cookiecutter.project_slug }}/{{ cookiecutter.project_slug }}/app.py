@@ -13,7 +13,7 @@ from {{ cookiecutter.project_slug }}.config import Config
 
 
 async def init(config: Config, logger: logging.Logger) -> web.Application:
-    app = web.Application(logger=logger, middlewares=[
+    app = web.Application(logger=logger, middlewares=[  # type: ignore
         core.catch_exceptions_middleware, core.prometheus_middleware
     ])
 

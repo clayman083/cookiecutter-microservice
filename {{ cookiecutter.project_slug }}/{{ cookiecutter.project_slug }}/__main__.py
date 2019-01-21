@@ -3,7 +3,7 @@ import logging
 import logging.config
 
 import click
-import uvloop
+import uvloop  # type: ignore
 
 from {{ cookiecutter.project_slug }}.adapters.cli.server import server
 from {{ cookiecutter.project_slug }}.app import configure, init
@@ -33,3 +33,7 @@ def cli(context, config: str):
 
 
 cli.add_command(server, name='server')
+
+
+if __name__ == "__main__":
+    cli()

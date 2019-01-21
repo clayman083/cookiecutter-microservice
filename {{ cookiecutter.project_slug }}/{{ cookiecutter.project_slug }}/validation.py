@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Dict
 
-import cerberus
+import cerberus  # type: ignore
 
 
 class ValidationError(Exception):

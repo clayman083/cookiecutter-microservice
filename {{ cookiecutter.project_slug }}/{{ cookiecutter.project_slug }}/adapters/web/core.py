@@ -2,7 +2,7 @@ import time
 
 import prometheus_client  # type: ignore
 from aiohttp import web
-from prometheus_client import CONTENT_TYPE_LATEST
+from prometheus_client import CONTENT_TYPE_LATEST  # type: ignore
 
 from {{ cookiecutter.project_slug }}.adapters.web import Handler, json_response
 from {{ cookiecutter.project_slug }}.validation import ValidationError
@@ -19,8 +19,8 @@ async def catch_exceptions_middleware(request: web.Request, handler):
             raise
 
         # send error to sentry
-        if request.app.raven:
-            request.app.raven.captureException()
+        if 'raven' in request.app:
+            request.app['raven'].captureException()
         else:
             raise
         raise web.HTTPInternalServerError

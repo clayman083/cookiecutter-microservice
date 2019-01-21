@@ -25,11 +25,11 @@ clean-test:
 	rm -f tests/coverage.xml
 
 install: clean
-	pip install -e .
+	flit install -s --python $WORKON_HOME/{{ cookiecutter.project_slug }}
 
 lint:
-	flake8 wallet tests
-	mypy wallet tests
+	flake8 {{ cookiecutter.project_slug }} tests
+	mypy {{ cookiecutter.project_slug }} tests
 
 test:
 	py.test
