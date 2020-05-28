@@ -12,8 +12,7 @@ Features
 --------
 
 * Testing with ``py.test``
-* Travis-CI_: Ready for Travis Continuous Integration testing
-* Tox_ testing: Setup to easily test for Python 3.6
+* Tox_ testing: Setup to easily test for Python 3.8
 * Command line interface using Click_
 * Build Docker image for distribution
 * Add Consul_ support

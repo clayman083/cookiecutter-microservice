@@ -1,0 +1,50 @@
+{% raw %}
+
+name: Release and deploy
+
+on:
+  create:
+    tags:
+      - v*
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+
+      - name: Install requirements
+        # Устанавливаем зависимости
+        run: pip install pipenv tox
+
+      - name: Run tests
+        run: tox
+
+  publish:
+    needs: [tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Publish to Docker Repository
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+{% endraw %}
+          name: {{ cookiecutter.dockerhub_username }}/{{ cookiecutter.project_name.lower().replace('-', '_') }}
+{% raw %}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_names: true
+
+  deploy:
+    needs: [publish]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+{% endraw %}

@@ -1,9 +1,10 @@
 {
-    "project_name": "Project Name",
-    "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_') }}",
-    "description": "A short description of the project.",
-    "version": "0.1.0",
-    "email": "you@example.com",
-    "author_name": "Author",
-    "github_username": "github"
+  "project_name": "Project Name",
+  "description": "A short description of the project.",
+  "version": "0.0.0",
+  "author_name": "Author",
+  "author_email": "Email",
+  "github_username": "github",
+  "dockerhub_username": "dockerhub",
+  "_extensions": ["jinja2_time.TimeExtension"]
 }

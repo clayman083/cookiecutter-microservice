@@ -1,8 +1,7 @@
 #! /bin/sh
 
 git init
+poetry install
 
-python3 -m venv venv
-venv/bin/pip3 install -U pip
-
-flit install -s --python venv/bin/python
+git add -A
+git commit -m "Initial project structure"
