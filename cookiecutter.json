@@ -5,6 +5,6 @@
   "author_name": "Author",
   "author_email": "Email",
   "github_username": "github",
-  "dockerhub_username": "dockerhub",
+  "docker_image_name": "ghcr.io/<owner>/<project_name>",
   "_extensions": ["jinja2_time.TimeExtension"]
 }

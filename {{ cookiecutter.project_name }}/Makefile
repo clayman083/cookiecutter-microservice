@@ -1,6 +1,6 @@
 .PHONY: build clean clean-test clean-pyc clean-build proto
 
-NAME	:= {{ cookiecutter.dockerhub_username }}/{{ cookiecutter.project_name.lower().replace('-', '_') }}
+NAME	:= {{ cookiecutter.docker_image_name }}
 VERSION ?= latest
 
 

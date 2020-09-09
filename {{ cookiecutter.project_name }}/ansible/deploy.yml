@@ -1,0 +1,54 @@
+{% raw %}
+---
+
+- hosts: servers
+  become: true
+
+  vars:
+    domain: clayman.pro
+
+    consul_host: "consul.service.consul"
+    consul_port: "8500"
+
+    private_network: "{{ ansible_eth1['ipv4'] }}"
+{% endraw %}
+    image: {{ cookiecutter.docker_image_name }}
+{% raw %}
+    version: "{{ lookup('env','VERSION')|default('latest') }}"
+
+    replicas: "{{ lookup('env', 'REPLICAS')|default(1) }}"
+
+  tasks:
+    - name: Pull image
+      docker_image:
+        name: "{{ image }}:{{ version }}"
+        source: pull
+
+    - name: Update service
+      docker_swarm_service:
+{% endraw %}
+        name: {{ cookiecutter.project_name.lower().replace('-', '_') }}
+{% raw %}
+        image: "{{ image }}:{{ version }}"
+        command: python3 -m shortner server run
+        args:
+          - "--tags={{ env }}"
+        dns:
+          - "{{ private_network.address }}"
+        env:
+          CONSUL_HOST: "{{ consul_host }}"
+          CONSUL_PORT: "{{ consul_port }}"
+        logging:
+          driver: syslog
+          options:
+            syslog-address: unixgram:///dev/log
+{% endraw %}
+            tag: {{ cookiecutter.project_name.lower().replace('-', '_') }}
+{% raw %}
+        networks:
+          - backend
+        replicas: "{{ replicas }}"
+        limits:
+          cpus: '0.50'
+          memory: 64M
+{% endraw %}

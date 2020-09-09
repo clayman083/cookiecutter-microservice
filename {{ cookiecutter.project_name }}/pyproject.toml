@@ -17,6 +17,7 @@ aiohttp-micro = {git = "https://github.com/clayman083/aiohttp-micro.git", rev = 
 python = "^3.8"
 
 [tool.poetry.dev-dependencies]
+ansible = "2.9.13"
 black = "^19.10b0"
 coverage = "*"
 faker = "*"
@@ -28,6 +29,7 @@ flake8-import-order = "*"
 flake8-print = "*"
 flake8-pytest = "*"
 ipython = "*"
+jinja2 = "2.11.2"
 mypy = "*"
 pytest = "*"
 pytest-aiohttp = "*"
