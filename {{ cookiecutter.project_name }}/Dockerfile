@@ -1,4 +1,4 @@
-FROM python:3.8-slim as build
+FROM python:3.10-slim as build
 
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update && apt-get install -y -q \
@@ -13,7 +13,7 @@ WORKDIR /app
 RUN poetry build
 
 
-FROM python:3.8-slim
+FROM python:3.10-slim
 
 COPY --from=build /app/dist/*.whl .
 
@@ -27,6 +27,9 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt autoremove -y --quiet
 
 EXPOSE 5000
+
+HEALTHCHECK --interval=10s --timeout=3s \
+  CMD curl -f http://localhost:5000/-/health || exit 1
 
 ENTRYPOINT ["python3", "-m", "{{ cookiecutter.project_name.lower().replace('-', '_') }}"]
 
