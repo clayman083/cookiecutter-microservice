@@ -1,24 +1,48 @@
-import os
+import socket
+from importlib.metadata import Distribution
 
+import punq
 from aiohttp import web
-from aiohttp_micro import AppConfig as BaseConfig  # type: ignore
-from aiohttp_micro import setup as setup_micro
-from aiohttp_micro import setup_logging, setup_metrics
+from structlog.types import WrappedLogger
+
+from {{ cookiecutter.project_name.lower().replace('-', '_') }}.web.handlers import meta
+from {{ cookiecutter.project_name.lower().replace('-', '_') }}.web.middlewares.logging import logging_middleware
+from {{ cookiecutter.project_name.lower().replace('-', '_') }}.web.middlewares.metrics import metrics_middleware
 
 
-class AppConfig(BaseConfig):
-    """Application config."""
+def create_container(logger: WrappedLogger) -> punq.Container:
+    """Create IoC container for application."""
+    container = punq.Container()
+
+    container.register(WrappedLogger, instance=logger)
+
+    return container
 
 
-async def init(app_name: str, config: AppConfig) -> web.Application:
-    app = web.Application()
+def init(
+    dist: Distribution, container: punq.Container, debug: bool = False
+) -> web.Application:
+    """Create application instance.
 
-    app["app_root"] = os.path.dirname(__file__)
+    Args:
+        dist: Application distribution.
+        container: IoC contianer.
+        debug: Run application in debug mode.
 
-    setup_micro(app, app_name=app_name, config=config)
-    setup_metrics(app)
-    setup_logging(app)
+    Return:
+        New application instance.
+    """
+    app = web.Application(
+        middlewares=(logging_middleware, metrics_middleware),
+        logger=container.resolve(WrappedLogger),
+    )
 
-    app["logger"].info("Initialize application")
+    app["hostname"] = socket.gethostname()
+    app["distribution"] = dist
+
+    app["debug"] = debug
+    app["container"] = container
+
+    app.router.add_routes(routes=meta.routes)
 
     return app

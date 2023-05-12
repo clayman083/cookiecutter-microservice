@@ -1,43 +1,143 @@
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "{{ cookiecutter.project_name.lower().replace('-', '_') }}"
 version = "{{ cookiecutter.version }}"
 description = "{{ cookiecutter.description }}"
 authors = ["{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>"]
+license = "MIT"
 packages = [
     { include = "{{ cookiecutter.project_name.lower().replace('-', '_') }}", from = "src" },
 ]
 
+# Dependencies
 [tool.poetry.dependencies]
-aiohttp-micro = {git = "https://github.com/clayman083/aiohttp-micro.git", rev = "v0.6.0"}
 python = "^3.10"
+aiohttp = "^3.8.3"
+click = "^8.1.3"
+marshmallow = "^3.18.0"
+prometheus-client = "^0.16.0"
+punq = "^0.6.2"
+setuptools = "^67.7.2"
+structlog = "^23.0.0"
+ujson = "^5.5.0"
+uvloop = "^0.17.0"
 
-[tool.poetry.dev-dependencies]
-black = "19.10b0"
-coverage = "5.5"
-faker = "8.8.2"
-flake8 = "3.9.2"
-flake8-aaa = "0.12.0"
-flake8-bugbear = "21.4.3"
-flake8-builtins-unleashed = "1.3.1"
-flake8-comprehensions = "3.5.0"
-flake8-import-order = "0.18.1"
-flake8-print = "4.0.0"
-ipdb = "0.13.9"
-ipython = "7.25.0"
-marshmallow-jsonschema = "0.12.0"
-mypy = "0.910"
-pytest = "6.2.4"
-pytest-aiohttp = "0.3.0"
-pytest-cov = "2.12.1"
-pytest-faker = "2.0.0"
-pytest-fixture-maker = "0.2.0"
-pytest-freezegun = "0.4.2"
-pytest-mock = "3.6.1"
-pytest-postgres = "0.7.0"
-pytest-xdist = {extras = ["psutil"], version = "2.3.0"}
-rope = "0.19.0"
-types-click = "7.1.2"
+[tool.poetry.group.dev.dependencies]
+black = "^23.0.0"
+coverage = {extras = ["toml"], version = "^7.0.5"}
+mypy = "1.2.0"
+pytest = "^7.1.3"
+pytest-aiohttp = "^1.0.4"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.8.2"
+pytest-randomly = "^3.12.0"
+pytest-xdist = "^3.0.0"
+ruff = "^0.0.263"
+types-ujson = "^5.5.0"
+
+[tool.poetry.group.debug.dependencies]
+debugpy = "^1.6.5"
+ipdb = "^0.13.9"
+ipython = "^8.5.0"
+
+# Black config
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+
+# Coverage config
+[tool.coverage.run]
+branch = true
+data_file = "tests/.coverage"
+source = ["src/{{ cookiecutter.project_name.lower().replace('-', '_') }}"]
+omit = [
+  "*__main__*",
+  "src/{{ cookiecutter.project_name.lower().replace('-', '_') }}/cli/server.py",
+]
+
+[tool.coverage.paths]
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.coverage.html]
+directory = "tests/coverage"
+
+# Mypy config
+[tool.mypy]
+strict = true
+python_version = "3.11"
+
+warn_return_any = true
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = "punq.*"
+ignore_missing_imports = true
+
+# Pytest settings
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cov"
+asyncio_mode = "auto"
+markers = ["unit", "integration", "smoke"]
+norecursedirs = ".tox"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+testpaths = ["tests"]
+
+
+# Ruff config
+[tool.ruff]
+ignore = [
+  "D100", # Missing docstring in public module
+  "D104", # Missing docstring in public package
+  "D107", # Missing docstring in __init__
+  "PT004",
+  "SIM108"
+]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "D",    # pydocstyle
+  "F",    # pyflakes
+  "C90",  # mccabe
+  "C4",   # flake8-comprehensions
+  # "B",    # flake8-bugbear
+  "Q",    # flake8-quotes
+  "T20",  # flake8-print
+  "PT",   # flake8-pytest-style
+  "RET",  # flake8-return
+  "SIM",  # flake8-simplify
+  "ERA",  # eradicate
+]
+unfixable = [
+  'T201',
+]
+exclude = ['.venv']
+line-length = 88
+respect-gitignore = true
+src = ["src", "tests"]
+target-version = "py311"
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.ruff.flake8-pytest-style]
+fixture-parentheses = true
+mark-parentheses = true
+
+[tool.ruff.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+[tool.ruff.isort]
+known-first-party = ["{{ cookiecutter.project_name.lower().replace('-', '_') }}", "tests"]
+

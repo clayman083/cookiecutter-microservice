@@ -1,4 +1,4 @@
-FROM python:3.10-slim as build
+FROM python:3.11-slim as build
 
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update && apt-get install -y -q \
@@ -13,7 +13,7 @@ WORKDIR /app
 RUN poetry build
 
 
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 COPY --from=build /app/dist/*.whl .
 
@@ -33,4 +33,4 @@ HEALTHCHECK --interval=10s --timeout=3s \
 
 ENTRYPOINT ["python3", "-m", "{{ cookiecutter.project_name.lower().replace('-', '_') }}"]
 
-CMD [ "server", "run" ]
+CMD [ "server", "run", "--host=0.0.0.0" ]

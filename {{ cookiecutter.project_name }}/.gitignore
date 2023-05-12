@@ -4,20 +4,20 @@
 *.so
 
 # Packages
-*.egg
 .eggs
-*.egg-info
-dist
-build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
 .installed.cfg
+*.egg
+*.egg-info
+bin
+build
+develop-eggs
+dist
+eggs
 lib
 lib64
+parts
+sdist
+var
 
 # JS packages
 bower_components
@@ -29,13 +29,14 @@ pip-log.txt
 
 # Unit test / coverage reports
 .coverage
+.pytest_cache
 .tox
-cover
-tests/coverage
 assets/coverage
-htmlcov
+cover
 coverage.xml
+htmlcov
 nosetests.xml
+tests/coverage
 
 # Translations
 *.mo
@@ -43,13 +44,16 @@ nosetests.xml
 
 # Mr Developer
 .cache
+.devspace/
 .env
+.envrc
+.idea
+.mypy_cache
+.ruff_cache
 .project
 .pydevproject
-.idea
-.containers
-.mypy_cache
+.scannerwork
 .venv
-.vscode/.ropeproject
-.vscode/tags
-*.retry
+*.http
+ansible/.credentials
+venv
